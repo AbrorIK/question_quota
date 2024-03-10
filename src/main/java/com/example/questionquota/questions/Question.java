@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+@Entity
+@Table
 public class Question {
     @Id
     @SequenceGenerator(
@@ -34,6 +36,10 @@ public class Question {
     public Question(String text, LocalDate date) {
         this.text = text;
         this.date = date;
+    }
+
+    public Question() {
+
     }
 
     public Long getId() {

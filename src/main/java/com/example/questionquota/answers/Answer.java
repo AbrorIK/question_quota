@@ -4,10 +4,19 @@ import com.example.questionquota.questions.Question;
 import jakarta.persistence.*;
 
 @Entity
+@Table
 public class Answer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "answer_sequence",
+            sequenceName = "answer_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy =  GenerationType.SEQUENCE,
+            generator = "answer_sequence"
+    )
     private Long id;
 
     private String content;
@@ -18,6 +27,10 @@ public class Answer {
 
     public Answer(String content) {
         this.content = content;
+    }
+
+    public Answer() {
+
     }
 
     public Long getId() {
