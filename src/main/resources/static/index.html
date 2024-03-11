@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Quota</title>
+</head>
+<body>
+<h1>Question Quota</h1>
+<h2>Add New Question</h2>
+<form id="addQuestionForm" action="/api/question" method="post">
+    <label for="title">Title:</label><br>
+    <input type="text" id="title" name="title"><br>
+    <label for="text">Question:</label><br>
+    <textarea id="text" name="text" rows="4" cols="50"></textarea><br>
+    <button type="submit">Submit</button>
+</form>
+
+<h2>All Questions</h2>
+<ul id="questionList"></ul>
+
+<script>
+    fetch('/api/question')
+        .then(response => response.json())
+        .then(questions => {
+            const questionList = document.getElementById('questionList');
+            questions.forEach(question => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `ID: ${question.id}, Title: ${question.title}, Text: ${question.text}, Date: ${question.date}`;
+                questionList.appendChild(listItem);
+            });
+        });
+</script>
+</body>
+</html>

@@ -4,6 +4,7 @@ import com.example.questionquota.answers.Answer;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -20,6 +21,8 @@ public class Question {
             generator = "question_sequence"
     )
     private Long id;
+
+    private String title;
     private String text;
     private LocalDate date;
 
@@ -27,16 +30,19 @@ public class Question {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = CascadeType.ALL)
     private List<Answer> answers;
 
-    public Question(Long id, String text, LocalDate date) {
+    public Question(Long id, String text, String title) {
         this.id = id;
         this.text = text;
-        this.date = date;
+        this.date = LocalDate.now();
+        this.title = title;
     }
 
-    public Question(String text, LocalDate date) {
+    public Question(String text, String title) {
         this.text = text;
-        this.date = date;
+        this.date = LocalDate.now();
+        this.title = title;
     }
+
 
     public Question() {
 
@@ -64,6 +70,14 @@ public class Question {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
