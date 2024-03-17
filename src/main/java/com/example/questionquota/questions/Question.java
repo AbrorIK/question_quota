@@ -1,6 +1,7 @@
 package com.example.questionquota.questions;
 
 import com.example.questionquota.answers.Answer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table
+@JsonIgnoreProperties("answers")
 public class Question {
     @Id
     @SequenceGenerator(
@@ -78,6 +80,14 @@ public class Question {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
     }
 
     @Override

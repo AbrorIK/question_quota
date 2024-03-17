@@ -3,33 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Question Quota</title>
+    <title>Question Form</title>
 </head>
 <body>
-<h1>Question Quota</h1>
+<h1>Questions</h1>
+
+<h2>Get Questions</h2>
+<button onclick="getQuestions()">Get Questions</button>
+<ul id="questionsList"></ul>
+
 <h2>Add New Question</h2>
-<form id="addQuestionForm" action="/api/question" method="post">
+<form id="questionForm" onsubmit="addNewQuestion(event)">
     <label for="title">Title:</label><br>
-    <input type="text" id="title" name="title"><br>
-    <label for="text">Question:</label><br>
-    <textarea id="text" name="text" rows="4" cols="50"></textarea><br>
+    <input type="text" id="title" name="title" required><br>
+    <label for="text">Text:</label><br>
+    <textarea id="text" name="text" required></textarea><br>
     <button type="submit">Submit</button>
 </form>
 
-<h2>All Questions</h2>
-<ul id="questionList"></ul>
-
 <script>
-    fetch('/api/question')
-        .then(response => response.json())
-        .then(questions => {
-            const questionList = document.getElementById('questionList');
-            questions.forEach(question => {
-                const listItem = document.createElement('li');
-                listItem.textContent = `ID: ${question.id}, Title: ${question.title}, Text: ${question.text}, Date: ${question.date}`;
-                questionList.appendChild(listItem);
-            });
+    function getQuestions() {
+        fetch('/api/questions')
+            .then(response => response.json())
+            .then(data => {
+                const questionsList = document.getElementById('questionsList');
+                questionsList.innerHTML = '';
+                data.forEach(question => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${question.title}: ${question.text}`;
+                    questionsList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function addNewQuestion(event) {
+        event.preventDefault();
+        const form = document.getElementById('questionForm');
+        const formData = new FormData(form);
+        const questionData = {};
+        formData.forEach((value, key) => {
+            questionData[key] = value;
         });
+
+        fetch('/api/questions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // Ensure the correct content type
+            },
+            body: JSON.stringify(questionData),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                alert('Question added successfully!');
+                form.reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error adding question');
+            });
+    }
 </script>
+
 </body>
 </html>

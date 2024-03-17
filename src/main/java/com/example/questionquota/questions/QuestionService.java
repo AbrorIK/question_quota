@@ -22,4 +22,9 @@ public class QuestionService {
     public void addNewQuestion(Question question) {
         questionRepository.save(question);
     }
+
+    public Optional<Question> findQuestionById(Long id){
+        return questionRepository.findById(id);
+    }
+
 }
