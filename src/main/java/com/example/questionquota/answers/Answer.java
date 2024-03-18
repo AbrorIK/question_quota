@@ -25,6 +25,11 @@ public class Answer {
     @JoinColumn(name = "question_id")
     private Question question;
 
+    public Answer(Long id, String content) {
+        this.id = id;
+        this.content = content;
+    }
+
     public Answer(String content) {
         this.content = content;
     }
